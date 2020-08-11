@@ -34,37 +34,91 @@ function promptUsername(){
             name: "repoName",
             message: "Enter your repository's name:"
         }
-    ]).then(function(answers){
-        const queryURL = `https://api.github.com/users/${answers.username}/repos?per_page=100`;
+    ]).then(function(userInput){
+        const queryURL = `https://api.github.com/users/${userInput.username}/repos?per_page=100`;
         
         axios.get(queryURL).then(function(response){
             response.data.map(function(repo){
-                if (repo.name === answers.repoName){
-                    repoTitle.push(`# ${repoName}`);
+                if (repo.name === userInput.repoName){
+                    repoTitle.push(`# ${repo.name}`);
                     repoTitle.push("");
 
                     var repoStr = repoTitle.join("\n");
-
                     fs.writeFile("README.md", repoStr, function(error){
                         if (error){
                             throw error;
                         }
                     });
-                    if (repo.description === null){
+
+                    if (repo.userStory === null){
                         buildReadme();
+                    }else {
+                        repoTitle.push("## Description" + "\n" + repo.userStory);
+                        repoTitle.push("");
+
+                        var repoStr = repoTitle.join("\n");
+                        fs.writeFile("README.md", repoStr, function(error){
+                            if (error) {
+                                throw error;
+                            }
+                        });
                     }
                 }
-            })
-        })
-    
+            });
+        });
+        addTableOfContents();
     });
 };
 
 function addNewRepo() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "newRepoName",
+            message: "What is the name of your new repository?"
+        },
+        {
+            type: "input",
+            name: "role",
+            message: "What is your role or job position?"
+        },
+        {
+            type: "input",
+            name: "capability",
+            message: "What would you like you program to do? 'I would like a program that will:'"
+        },
+        {
+            type: "input",
+            name: "benefit",
+            message: "A 'so' statement; 'I want my program to do THIS so that:'"
+        },
+        {
+            type: "input",
+            name: "resources",
+            message: "What tools or processes did you use to achieve this? 'In order to do THIS, I will:'"
+        }
+    ]).then(function(userInput){
+        repoTitle.push(`# ${userInput.newRepoName}`);
+        repoTitle.push("");
 
+        const userStory = `As a ${userInput.role}, I have created an application that will ${userInput.capability}. I have created this application so that ${userInput.benefit}. In order to achieve this, I will ${userInput.resources}.`;
+        repoTitle.push(`## Description\n${userStory}`);
+        repoTitle.push("");
+
+        var repoStr = repoTitle.join("\n");
+        fs.writeFile("README.md", repoStr, function(error){
+            if (error) {
+                throw error;
+            }
+        });
+        addTableOfContents();
+    });
 };
 
 function buildReadme() {
 
 };
 
+function addTableOfContents() {
+
+};
