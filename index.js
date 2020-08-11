@@ -62,14 +62,15 @@ function promptUsername(){
                                 throw error;
                             }
                         });
+                        addTableOfContents();
                     }
                 }
             });
         });
-        addTableOfContents();
     });
 };
 
+// add a new repo if the user does not already have an existing repo
 function addNewRepo() {
     inquirer.prompt([
         {
@@ -115,8 +116,42 @@ function addNewRepo() {
     });
 };
 
+// build the users README file if the userStory = null
 function buildReadme() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "role",
+            message: "What is your role or job position?"
+        },
+        {
+            type: "input",
+            name: "capability",
+            message: "What would you like you program to do? 'I would like a program that will:'"
+        },
+        {
+            type: "input",
+            name: "benefit",
+            message: "A 'so' statement; 'I want my program to do THIS so that:'"
+        },
+        {
+            type: "input",
+            name: "resources",
+            message: "What tools or processes did you use to achieve this? 'In order to do THIS, I will:'"
+        }
+    ]).then(function(userInput) {
+        const userStory = `As a ${userInput.role}, I have created an application that will ${userInput.capability}. I have created this application so that ${userInput.benefit}. In order to achieve this, I will ${userInput.resources}.`;
+        repoTitle.push(`## Description\n${userStory}`);
+        repoTitle.push("");
 
+        var repoStr = repoTitle.join("\n");
+        fs.writeFile("README.md", repoStr, function(error){
+            if (error) {
+                throw error;
+            }
+        });
+        addTableOfContents();
+    });
 };
 
 function addTableOfContents() {
