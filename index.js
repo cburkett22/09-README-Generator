@@ -286,7 +286,7 @@ function addTableOfContents() {
                     axios.get(queryURL).then(function(response){
                         const avatarImg = response.data.avatar_url;
 
-                        repoTitle.push(`![Avatar image](${avatarImg}/to/img.png)`);
+                        repoTitle.push(avatarImg);
                         repoTitle.push("");
                     });
                 }
