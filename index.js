@@ -283,8 +283,8 @@ function addTableOfContents() {
                 if (userInput.username !== null) {
                     const queryURL = `https://api.github.com/users/${userInput.username}`;
                     axios.get(queryURL).then(function(response){
-                        const avatarImg = response.avatar_url;
-                        repoTitle.push(avatarImg);
+                        const avatarImg = response.data.avatar_url;
+                        repoTitle.push(`![Avatar image](${avatarImg}/to/img.png)`);
                         repoTitle.push("");
                     });
                 }
@@ -297,7 +297,7 @@ function addTableOfContents() {
                     const queryURL = `https://api.github.com/users/${userInput.username}`;
                     axios.get(queryURL).then(function(response){
                         const avatarImg = response.data.avatar_url;
-                        repoTitle.push(avatarImg);
+                        repoTitle.push(`![Avatar image](${avatarImg}/to/img.png)`);
                         repoTitle.push("");
                         var repoStr = repoTitle.join("\n");
                         fs.writeFile("README.md", repoStr, function(error){
@@ -373,7 +373,7 @@ function addTableOfContents() {
                     const queryUrl = `https://api.github.com/users/${userInput.username}`;
                     axios.get(queryUrl).then(function(response){
                         const avatarImg = response.data.avatar_url;
-                        repoTitle.push(avatarImg);
+                        repoTitle.push(`![Avatar image](${avatarImg}/to/img.png)`);
                         repoTitle.push("");
                     });
                 }
