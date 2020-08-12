@@ -155,5 +155,208 @@ function buildReadme() {
 };
 
 function addTableOfContents() {
-
+    inquirer.prompt([
+        {
+            type: "checkbox",
+            name: "tableOfContents",
+            message: "Would you like to include a Table of Contents?(Recommended for larger README files):",
+            choices: [
+                "Yup!",
+                "Nope!"
+            ]
+        }
+    ]).then(function({ tableOfContents }){
+        if (tableOfContents == "Yup!") {
+            inquirer.prompt([
+                {
+                    type: "checkbox",
+                    name: "contents",
+                    message: "Which items would you like to be included in your Table of Contents?",
+                    choices: [
+                        "Title",
+                        "Description",
+                        "Installation",
+                        "Usage",
+                        "License",
+                        "Contributing",
+                        "Tests",
+                    ]
+                },
+                {
+                    type: "input",
+                    name: "installation",
+                    message: "What are the steps that are required to install your project? Provide a step-by-step walk-through of how to get the development environment running:"
+                },
+                {
+                    type: "input",
+                    name: "usage",
+                    message: "What are the instructions for use?"
+                },
+                {
+                    type: "input",
+                    name: "license",
+                    message: "What licenses did you use?"
+                },
+                {
+                    type: "input",
+                    name: "contributors",
+                    message: "Who else contributed to the development of this application?"
+                },
+                {
+                    type: "input",
+                    name: "tests",
+                    message: "If you wrote tests for your application, how did you run them?"
+                },
+                {
+                    type: "input",
+                    name: "email",
+                    message: "What is your professional email? This will be displayed for any questions:"
+                },
+                {
+                    type: "input",
+                    name: "username",
+                    message: "Enter your GitHub username:"
+                }
+            ]).then(function(userInput){
+                repoTitle.push(`## Table of Contents\n`);
+                for (i = 0; i < userInput.contents.length; i++) {
+                    repoTitle.push(`* [${userInput.contents[i]}](#${userInput.contents[i]})`);
+                }
+                repoTitle.push("");
+                var repoStr = repoTitle.join("\n");
+                fs.writeFile("README.md", repoStr, function(error){
+                    if (error) {
+                        throw error;
+                    }
+                });
+                if (userInput.installation !== "") {
+                    repoTitle.push(`## Installation\n${userInput.installation}`);
+                    repoTitle.push("");
+                }
+                if (userInput.usage !== "") {
+                    repoTitle.push(`## Usage\n${userInput.usage}`);
+                    repoTitle.push("");
+                }
+                if (userInput.license !== "") {
+                    repoTitle.push(`## License\n${userInput.license}`);
+                    repoTitle.push("");
+                }
+                if (userInput.contributors !== "") {
+                    repoTitle.push(`## Contributors\n${userInput.contributors}`);
+                    repoTitle.push("");
+                }
+                if (userInput.tests !== "") {
+                    repoTitle.push(`## Tests\n${userInput.tests}`);
+                    repoTitle.push("");
+                }
+                if (userInput.email !== null) {
+                    repoTitle.push(`## Questions\n${userInput.email}`);
+                    repoTitle.push("");
+                }
+                if (userInput.username !== null) {
+                    const queryURL = `https://api.github.com/users/${userInput.username}`;
+                    axios.get(queryURL).then(function(response){
+                        const avatarImg = response.avatarImg_url;
+                        repoTitle.push(avatarImg);
+                        repoTitle.push("");
+                    });
+                }
+                var repoStr = repoTitle.join("\n");
+                    fs.writeFile("README.md", repoStr, function(error){
+                        if (error) {
+                            throw error;
+                        }
+                    });
+                    const queryURL = `https://api.github.com/users/${userInput.username}`;
+                    axios.get(queryURL).then(function(response){
+                        const avatarImg = response.data.avatarImg_url;
+                        repoTitle.push(avatarImg);
+                        repoTitle.push("");
+                        var repoStr = repoTitle.join("\n");
+                        fs.writeFile("README.md", repoStr, function(error){
+                            if (error) {
+                                throw error;
+                            }
+                        });
+                    });
+            });
+        } else if (tableOfContents == "Nope!") {
+            inquirer.prompt([
+                {
+                    type: "input",
+                    name: "installation",
+                    message: "What are the steps that are required to install your project? Provide a step-by-step walk-through of how to get the development environment running:"
+                },
+                {
+                    type: "input",
+                    name: "usage",
+                    message: "What are the instructions for use?"
+                },
+                {
+                    type: "input",
+                    name: "license",
+                    message: "What licenses did you use?"
+                },
+                {
+                    type: "input",
+                    name: "contributors",
+                    message: "Who else contributed to the development of this application?"
+                },
+                {
+                    type: "input",
+                    name: "tests",
+                    message: "If you wrote tests for your application, how did you run them?"
+                },
+                {
+                    type: "input",
+                    name: "email",
+                    message: "What is your professional email? This will be displayed for any questions:"
+                },
+                {
+                    type: "input",
+                    name: "username",
+                    message: "Enter your GitHub username:"
+                }
+            ]).then(function(userInput){
+                if (userInput.installation !== null) {
+                    repoTitle.push(`## Installation\n${userInput.installation}`);
+                    repoTitle.push("");
+                }
+                if (userInput.usage !== null) {
+                    repoTitle.push(`## Usage\n${userInput.usage}`);
+                    repoTitle.push("");
+                }
+                if (userInput.license !== null) {
+                    repoTitle.push(`## License\n${userInput.license}`);
+                    repoTitle.push("");
+                }
+                if (userInput.contributors !== null) {
+                    repoTitle.push(`## Contributors\n${userInput.contributors}`);
+                    repoTitle.push("");
+                }
+                if (userInput.tests !== null) {
+                    repoTitle.push(`## Tests\n${userInput.tests}`);
+                    repoTitle.push("");
+                }
+                if (userInput.email !== null) {
+                    repoTitle.push(`## Questions\nPlease feel free to email me if you have any questions: ${userInput.email}`);
+                    repoTitle.push("");
+                }
+                if (userInput.username !== null) {
+                    const queryUrl = `https://api.github.com/users/${userInput.username}`;
+                    axios.get(queryUrl).then(function(response){
+                        const avatarImg = response.data.avatarImg_url;
+                        repoTitle.push(avatarImg);
+                        repoTitle.push("");
+                    });
+                }
+                var repoStr = repoTitle.join("\n");
+                    fs.writeFile("README.md", repoStr, function(error){
+                        if (error) {
+                            throw error;
+                        }
+                    });
+            });
+        }
+    });
 };
