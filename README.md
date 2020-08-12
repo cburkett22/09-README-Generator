@@ -31,8 +31,6 @@ asdf
 asdf
 
 ## Questions
-guru@gmail.com
-
-![Avatar image](https://avatars3.githubusercontent.com/u/63064602?v=4/to/img.png)
+asdf
 
 ![Avatar image](https://avatars3.githubusercontent.com/u/63064602?v=4/to/img.png)

@@ -282,31 +282,38 @@ function addTableOfContents() {
                 }
                 if (userInput.username !== null) {
                     const queryURL = `https://api.github.com/users/${userInput.username}`;
+
                     axios.get(queryURL).then(function(response){
                         const avatarImg = response.data.avatar_url;
+
                         repoTitle.push(`![Avatar image](${avatarImg}/to/img.png)`);
                         repoTitle.push("");
                     });
                 }
+
+                const queryURL = `https://api.github.com/users/${userInput.username}`;
+
+                axios.get(queryURL).then(function(response){
+                    const avatarImg = response.data.avatar_url;
+
+                    repoTitle.push(`![Avatar image](${avatarImg}/to/img.png)`);
+                    repoTitle.push("");
+                    var repoStr = repoTitle.join("\n");
+                    fs.writeFile("README.md", repoStr, function(error){
+                        if (error) {
+                            throw error;
+                        }
+                    });
+                });
+
                 var repoStr = repoTitle.join("\n");
                     fs.writeFile("README.md", repoStr, function(error){
                         if (error) {
                             throw error;
                         }
                     });
-                    const queryURL = `https://api.github.com/users/${userInput.username}`;
-                    axios.get(queryURL).then(function(response){
-                        const avatarImg = response.data.avatar_url;
-                        repoTitle.push(`![Avatar image](${avatarImg}/to/img.png)`);
-                        repoTitle.push("");
-                        var repoStr = repoTitle.join("\n");
-                        fs.writeFile("README.md", repoStr, function(error){
-                            if (error) {
-                                throw error;
-                            }
-                        });
-                    });
             });
+            
         } else if (tableOfContents == "Nope!") {
             inquirer.prompt([
                 {
