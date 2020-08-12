@@ -36,11 +36,15 @@ function promptUsername(){
         }
     ]).then(function(userInput){
         const queryURL = `https://api.github.com/users/${userInput.username}/repos?per_page=100`;
+        const badgeURL = `https://img.shields.io/github/last-commit/${userInput.username}/${userInput.repoName}`;
         
         axios.get(queryURL).then(function(response){
             response.data.map(function(repo){
                 if (repo.name === userInput.repoName){
                     repoTitle.push(`# ${repo.name}`);
+                    repoTitle.push("");
+
+                    repoTitle.push(`[![GitHub last commit](${badgeURL})]()`);
                     repoTitle.push("");
 
                     var repoStr = repoTitle.join("\n");
@@ -154,6 +158,7 @@ function buildReadme() {
     });
 };
 
+// addTableOfContents() will be prompted at the end of all other functions
 function addTableOfContents() {
     inquirer.prompt([
         {
