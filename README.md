@@ -1,7 +1,9 @@
 # 09-README-Generator
 
+[![GitHub last commit](https://img.shields.io/github/last-commit/cburkett22/09-README-Generator)]()
+
 ## Description
-As a webdev, I have created an application that will blah. I have created this application so that blah. In order to achieve this, I will blah.
+undefined
 
 ## Table of Contents
 
@@ -29,6 +31,8 @@ asdf
 asdf
 
 ## Questions
-guru@gmail.com
+email
+
+
 
 
