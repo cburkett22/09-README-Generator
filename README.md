@@ -3,7 +3,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/cburkett22/09-README-Generator)]()
 
 ## Description
-undefined
+As a webdev, I have created an application that will blah. I have created this application so that blah. In order to achieve this, I will blah.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ undefined
 * [Tests](#Tests)
 
 ## Installation
-asdf
+asdfasf
 
 ## Usage
 asdf
@@ -31,8 +31,8 @@ asdf
 asdf
 
 ## Questions
-email
+guru@gmail.com
 
 
 
-
+https://avatars3.githubusercontent.com/u/63064602?v=4

@@ -16,7 +16,7 @@ inquirer.prompt([
 ]).then(function({ existingRepo }) {
     if (existingRepo == "Yup!"){
         promptUsername();
-    }else{
+    }else if (existingRepo == "Nope!") {
         addNewRepo();
     }
 });
@@ -33,6 +33,26 @@ function promptUsername(){
             type: "input",
             name: "repoName",
             message: "Enter your repository's name:"
+        },
+        {
+            type: "input",
+            name: "role",
+            message: "What is your role or job position?"
+        },
+        {
+            type: "input",
+            name: "capability",
+            message: "What would you like you program to do? 'I would like a program that will:'"
+        },
+        {
+            type: "input",
+            name: "benefit",
+            message: "A 'so' statement; 'I want my program to do THIS so that:'"
+        },
+        {
+            type: "input",
+            name: "resources",
+            message: "What tools or processes did you use to achieve this? 'In order to do THIS, I will:'"
         }
     ]).then(function(userInput){
         const queryURL = `https://api.github.com/users/${userInput.username}/repos?per_page=100`;
@@ -57,7 +77,9 @@ function promptUsername(){
                     if (repo.userStory === null){
                         buildReadme();
                     }else {
-                        repoTitle.push("## Description" + "\n" + repo.userStory);
+                        const userStory = `As a ${userInput.role}, I have created an application that will ${userInput.capability}. I have created this application so that ${userInput.benefit}. In order to achieve this, I will ${userInput.resources}.`;
+
+                        repoTitle.push(`## Description\n${userStory}`);
                         repoTitle.push("");
 
                         var repoStr = repoTitle.join("\n");
@@ -261,7 +283,7 @@ function addTableOfContents() {
                 if (userInput.username !== null) {
                     const queryURL = `https://api.github.com/users/${userInput.username}`;
                     axios.get(queryURL).then(function(response){
-                        const avatarImg = response.avatarImg_url;
+                        const avatarImg = response.avatar_url;
                         repoTitle.push(avatarImg);
                         repoTitle.push("");
                     });
@@ -274,7 +296,7 @@ function addTableOfContents() {
                     });
                     const queryURL = `https://api.github.com/users/${userInput.username}`;
                     axios.get(queryURL).then(function(response){
-                        const avatarImg = response.data.avatarImg_url;
+                        const avatarImg = response.data.avatar_url;
                         repoTitle.push(avatarImg);
                         repoTitle.push("");
                         var repoStr = repoTitle.join("\n");
@@ -350,7 +372,7 @@ function addTableOfContents() {
                 if (userInput.username !== null) {
                     const queryUrl = `https://api.github.com/users/${userInput.username}`;
                     axios.get(queryUrl).then(function(response){
-                        const avatarImg = response.data.avatarImg_url;
+                        const avatarImg = response.data.avatar_url;
                         repoTitle.push(avatarImg);
                         repoTitle.push("");
                     });
